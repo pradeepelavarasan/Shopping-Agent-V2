@@ -4,7 +4,7 @@
 > 
 > ✨ **Your AI Shopping Consultant = Multi-Agent Reasoning + Stealth Scraping.**
 
-📹 **Demo Video:** [https://www.youtube.com/watch?v=your-video-id](https://www.youtube.com/watch?v=your-video-id)
+📹 **Demo Video:** [https://youtu.be/v-O43Ika84I](https://youtu.be/v-O43Ika84I)
 
 ---
 
