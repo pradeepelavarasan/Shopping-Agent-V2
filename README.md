@@ -1,4 +1,4 @@
-> ✨ **Your AI Shopping Consultant = Multi-Agent Reasoning + Stealth Scraping.**
+> 🛡️ **Your Personal Shopping Research Assistant: Elevating every purchase decision with autonomous, data-driven expert analysis.**
 
 📹 **Demo Video:** [https://youtu.be/v-O43Ika84I](https://youtu.be/v-O43Ika84I)
 
@@ -10,7 +10,7 @@
 ---
 
 ## 📖 "The What"
-Shopping Agent v2 is a fully autonomous research agent. It takes a search query, navigates the web using stealth scraping, extracts high-fidelity data, and runs a multi-stage reasoning pipeline to deliver an expert recommendation.
+Shopping Agent v2 is a fully autonomous research agent. It takes a search query, navigates the web to extract high-resolution  data, and runs a multi-stage reasoning pipeline to deliver an expert recommendation.
 
 ---
 
@@ -26,7 +26,7 @@ Follow these steps to set up the environment and run the autonomous researcher l
 ### 1. Prerequisites
 - **Python 3.10+** (Recommended: install via [uv](https://github.com/astral-sh/uv))
 - **Google Gemini API Key** (Generate at [AI Studio](https://aistudio.google.com/))
-- **Playwright** (for stealth scraping)
+- **Playwright** (for web-scale research)
 
 ### 2. Installation
 ```bash
@@ -120,7 +120,7 @@ To achieve high-quality results, we implemented a "Hardened" prompting strategy 
     > "You are a Prompt Evaluation-ready Assistant. Rules: EXPLAIN YOUR THINKING, SELF-VERIFY all data points, and return ONLY valid JSON matching the schema."
 *   **User Prompt**:
     > "Evaluate these products: {product_data} against these criteria: {priorities}. 
-    > **PIPELINE CONTEXT**: Step 2 of 3. You are receiving output from the Step 1 'Web Scraping Tool'.
+    > **PIPELINE CONTEXT**: Step 2 of 3. You are receiving output from the Step 1 'Web Search Tool'.
     > **TOOL SEPARATION**: Treat provided data as 'Tool Output'. Do not use external knowledge.
     > **REASONING TYPE**: Identify logic (specs_analysis, sentiment_analysis, or price_logic).
     > **INTERNAL SELF-CHECK**: Verify ASIN and price match input exactly."
