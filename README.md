@@ -2,10 +2,10 @@
 
 📹 **Demo Video:** [https://youtu.be/v-O43Ika84I](https://youtu.be/v-O43Ika84I)
 
-<img src="assets/Screenshot%20list%20view.png" width="280" alt="Shopping Agent List View">
+<img src="assets/screenshot_list_view.png" width="280" alt="Shopping Agent List View">
 <br>
 
-<img src="assets/Screenshot%20research%20view.png" width="800" alt="Shopping Agent Research View">
+<img src="assets/screenshot_research_view.png" width="800" alt="Shopping Agent Research View">
 
 ---
 

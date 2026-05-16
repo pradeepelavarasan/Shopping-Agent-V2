@@ -10,6 +10,9 @@ wheels/
 .venv
 node_modules/
 
+# Assets (Explicitly Tracked)
+!assets/
+
 # Agent Artifacts & Sensitive Data
 Videos/
 traces/
