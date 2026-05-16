@@ -8,3 +8,24 @@ wheels/
 
 # Virtual environments
 .venv
+node_modules/
+
+# Agent Artifacts & Sensitive Data
+Videos/
+traces/
+learnings.md
+Pending_Improvements.md
+Amazon_Bot_Detection_Navigation_Ideas.md
+testing.md
+*.png
+*.jpg
+*.log
+
+# Workspace / Temporary files
+.DS_Store
+.idea/
+.vscode/
+debug_agent.py
+debug_amazon.py
+mcp_server.py
+test_e2e.py
