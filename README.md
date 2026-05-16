@@ -1,8 +1,11 @@
-# Shopping Agent v2: Autonomous Product Researcher
-
 > ✨ **Your AI Shopping Consultant = Multi-Agent Reasoning + Stealth Scraping.**
 
 📹 **Demo Video:** [https://youtu.be/v-O43Ika84I](https://youtu.be/v-O43Ika84I)
+
+<img src="assets/Screenshot%20list%20view.png" width="280" alt="Shopping Agent List View">
+<br>
+
+<img src="assets/Screenshot%20research%20view.png" width="800" alt="Shopping Agent Research View">
 
 ---
 
@@ -16,8 +19,54 @@ Shopping research is cognitively exhausting. Context-switching between tabs and 
 
 ---
 
-## 📖 "The Learnings"
+## 🛠️ "How to get it"
 
+Follow these steps to set up the environment and run the autonomous researcher locally.
+
+### 1. Prerequisites
+- **Python 3.10+** (Recommended: install via [uv](https://github.com/astral-sh/uv))
+- **Google Gemini API Key** (Generate at [AI Studio](https://aistudio.google.com/))
+- **Playwright** (for stealth scraping)
+
+### 2. Installation
+```bash
+# Clone and enter the repository
+git clone https://github.com/pradeepelavarasan/Shopping-Agent-V2
+cd Shopping-Agent-V2
+
+# Install dependencies and browsers
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+uv run playwright install chromium
+```
+
+### 3. Standalone Mode (Optional)
+This project is modular. If you are not using the internal `llm_gateway`, you can swap the import in `agent.py` to use a direct Gemini call:
+
+```python
+# In agent.py, replace the LLM import with a direct mock:
+import google.generativeai as genai
+
+class LLM:
+    def __init__(self, api_key):
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel('gemini-1.5-flash')
+
+    def chat(self, prompt):
+        response = self.model.generate_content(prompt)
+        return {"parsed": json.loads(response.text)}
+```
+
+### 4. Running the Agent
+```bash
+# Start the server
+PYTHONPATH=. uv run uvicorn api:app --port 8000 --reload
+```
+
+---
+
+## 📖 "The Learnings"
 This section outlines the core architectural patterns and technical implementation details of the project.
 
 ### 1. LLM Gateway Integration
@@ -26,8 +75,11 @@ The **LLM Gateway** acts as the central hub for all AI interactions, abstracting
 *   **Quota Enforcement**: Manages precise **RPM (Requests Per Minute)** and **RPD (Requests Per Day)** to stay within Free Tier limits.
 *   **Unified Interface**: A single local endpoint handles authentication, retries, and formatting.
 
-### 2. Pydantic as the Project's "Data Spine"
-We use **Pydantic (v2)** to define strict data contracts:
+## 2. Pydantic as the Project's "Data Spine"
+We use **Pydantic (v2)** to define the strict data contracts between the Scraper, the AI agents, and the Frontend.
+
+### A. Core Data Definitions (`schemas.py`)
+We use multiple nested models to manage the complex data flow:
 ```python
 # Product Analysis Agent (The "Scorecard")
 class CriterionEvaluation(BaseModel):
@@ -44,6 +96,11 @@ class AgentAnalysisResult(BaseModel):
     self_verification_log: str # Log of internal sanity checks
     fallback_applied: bool     # Error handling flag
 ```
+
+### B. Advanced JSON Operations
+*   **`model_json_schema()`**: Automatically generates the "instruction manual" sent to the LLM Gateway to enforce Strict Mode.
+*   **`model_validate_json()`**: Strictly parses and validates raw AI strings into Python objects, ensuring no "hallucinated" fields enter our system.
+*   **`model_dump_json()`**: Standardizes the "Round Trip" from the Python backend to the Javascript Chrome extension.
 
 ### 3. Structured Prompting, Thinking & Reasoning
 To achieve high-quality results, we implemented a "Hardened" prompting strategy that satisfies 9 key criteria for robust agentic behavior.
@@ -100,6 +157,22 @@ To achieve high-quality results, we implemented a "Hardened" prompting strategy 
 ---
 
 ## 🛠️ "The How" — Technical Architecture
+Shopping Agent v2 is built on a distributed pipeline that balances high-speed data extraction with complex agentic reasoning.
+
+### 📍 The Autonomous Research Pipeline
+Unlike traditional comparison tools that require manual data entry, v2 utilizes an **Autonomous Discovery Loop**. When a query is received, the system initiates a multi-stage data journey:
+*   **Discovery Phase**: The engine performs an initial sweep of the search space to identify the top 20 candidates, ensuring the evaluation pool is grounded in current organic results.
+*   **High-Fidelity Extraction**: For the market leaders, the system performs direct page-processing to extract deep sentiment data, including raw consumer reviews and AI-generated summaries.
+
+### 🧠 Multi-Agent Orchestration
+To ensure maximum precision, the decision-making is partitioned into specialized AI layers:
+1.  **The Analytical Layer**: Processes raw product facts into structured "Scorecards," mapping every specification against your unique priorities.
+2.  **The Synthesis Layer**: Acts as the final expert consultant, weighing the scorecards to identify trade-offs and penning a holistic recommendation.
+3.  **The Reliability Broker**: All AI interactions are managed by a central gateway that ensures consistent formatting, manages quotas, and handles automatic model failovers.
+
+---
+
+### 🗺️ Data Flow & Architecture Diagram
 
 ![Architecture Diagram](https://raw.githubusercontent.com/pradeepelavarasan/Shopping-Agent-V2/main/assets/architecture_diagram.png)
 
@@ -110,13 +183,15 @@ To achieve high-quality results, we implemented a "Hardened" prompting strategy 
                 ▼
 ┌─────────────────────────────────────────────────────┐
 │          FastAPI Backend (Orchestration Layer)      │
-│  1. Stealth Scraper (Playwright)                    │
-│  2. Product Analysis Agent (Scorer)                 │
-│  3. Recommendation Agent (Consultant)               │
+│                                                     │
+│  1. Scraper (Playwright) → DISCOVERS 20 ITEMS       │
+│  2. Agent 1 (Scorer)    → BUILDS SCORECARDS        │
+│  3. Agent 2 (Consultant) → FINAL VERDICT           │
 └───────────────┬─────────────────────────────────────┘
                 ▼
 ┌─────────────────────────────────────────────────────┐
 │              LLM Gateway (Central Nervous System)   │
+│  (Rate Limiting | Failover | Quota Management)      │
 └─────────────────────────────────────────────────────┘
 ```
 
