@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shopping Agent Analysis</title>
+    <link rel="stylesheet" href="results.css">
+</head>
+<body style="margin: 0; background: #121218; overflow-x: hidden;">
+    <div id="shopping-agent-container">
+        <div class="header">
+            <div class="header-left">
+                <h2>✨ Shopping Agent Results</h2>
+            </div>
+            <div class="header-actions">
+                <div class="dropdown-wrapper">
+                    <button class="tune-btn" id="sa-tune-btn">🧠 How I recommend</button>
+                    <div id="sa-tune-dropdown" class="sa-tune-dropdown hidden">
+                        <div class="dropdown-title">🧠 Brain Logic</div>
+                        <div class="dropdown-sub" style="line-height: 1.5; margin-bottom: 12px;">These are the specific criteria the AI used to evaluate these products:</div>
+                        <div id="sa-priorities-vertical" class="vertical-drag-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <button id="sa-close" title="Close" onclick="window.close()">&times;</button>
+            </div>
+        </div>
+        <div id="sa-content">
+            <div class="loading-block" id="loading-block">
+                <div class="ai-analyzer"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                <div id="loading-cycler">Restoring Matrix...</div>
+            </div>
+            <div id="matrix-container"></div>
+        </div>
+    </div>
+    <script src="results.js"></script>
+</body>
+</html>

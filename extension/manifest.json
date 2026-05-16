@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Shopping Agent v2",
+  "version": "2.0",
+  "description": "Stateful agentic research queue for Amazon.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Shopping Agent v2"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ]
+}
